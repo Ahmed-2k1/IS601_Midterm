@@ -1,6 +1,15 @@
-# main.py
-from app import App    
+"""
+main.py
 
-# You must put this in your main.py because this forces the program to start when you run it from the command line.
+This module serves as the entry point for the application. It instantiates the App class
+from the app module and starts the application when executed from the command line.
+
+Usage:
+    python main.py
+"""
+
+from app import App
+
 if __name__ == "__main__":
-    app = App().start()  # Instantiate an instance of App
+    app = App().start()  # Instantiate an instance of App and start the application
+    

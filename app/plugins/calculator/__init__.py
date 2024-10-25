@@ -37,7 +37,7 @@ class CalculatorCommand(Command):
 
         logging.info(f"Loaded operations: {list(operations.keys())}")
         return operations
-
+   
     def register_operations(self, plugin_module, name, index, operations):
         """Registers operations from a plugin module."""
         try:
