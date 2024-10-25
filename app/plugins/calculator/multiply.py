@@ -1,40 +1,31 @@
-"""
-multiply.py
-
-This module provides the Multiply class to handle multiplication operations in the calculator.
-The result of the multiplication is displayed and saved to the calculation history.
-
-Classes:
-    Multiply - Executes multiplication and stores the result in the history.
-
-Usage:
-    from multiply import Multiply
-"""
-
 import logging
 from app.commands import Command
 from app.history_manager import HistoryManager
 
 class Multiply(Command):
     """
-    A command to perform multiplication between two numbers.
+    Command to perform a multiplication operation between two numbers.
 
-    Methods:
-        execute() - Prompts for two numbers, multiplies them, displays the result, and stores it in history.
+    Attributes:
+        history_manager (HistoryManager): Manages the history of calculation records.
     """
 
     def __init__(self):
+        """
+        Initializes the Multiply command with a history manager to log the operation's result.
+        """
         self.history_manager = HistoryManager()
 
     def execute(self):
         """
-        Executes the multiplication operation by taking user input for two numbers, calculating the product,
-        and displaying and storing the result.
+        Executes the multiplication operation by prompting the user for two numbers.
+
+        Prompts the user to input two numbers, calculates their product, displays the result,
+        logs the operation, and stores it in the history. Handles invalid input with an error message.
 
         Raises:
             ValueError: If the input is not a valid number.
         """
-        
         try:
             num1 = float(input("Enter first number: "))
             num2 = float(input("Enter second number: "))
@@ -46,4 +37,3 @@ class Multiply(Command):
         except ValueError as e:
             logging.error(f"Invalid input for multiplication: {e}")
             print("Error: Please enter valid numbers.")
-            

@@ -1,51 +1,37 @@
-"""
-history_manager.py
-
-This module contains the HistoryManager class, which manages calculation history
-by storing records in a CSV file. It provides functionalities to add, load, and clear
-the history of calculations.
-
-Classes:
-    HistoryManager - A manager for handling calculation history.
-
-Usage:
-    from history_manager import HistoryManager
-"""
 import pandas as pd
 import os
 
 class HistoryManager:
     """
-    A class to manage the history of calculations by storing them in a CSV file.
+    Manages the history of calculations, stored in a CSV file.
 
     Attributes:
-        file_path (str): The path to the history CSV file.
-
-    Methods:
-        add_record(operation, num1, num2, result) - Adds a new record to the calculation history.
-        load_history() - Loads the history of calculations from the CSV file.
-        clear_history() - Clears all records from the calculation history.
+        file_path (str): Path to the CSV file where history records are stored.
     """
 
     def __init__(self, file_path='history.csv'):
         """
-        Initializes the HistoryManager with a specified file path. If the file does not
-        exist, it creates one with appropriate headers.
+        Initializes the HistoryManager with a specified file path for the history file.
+        
+        If the file does not exist, it is created with the required headers.
 
         Args:
-            file_path (str): The path to the CSV file. Defaults to 'history.csv'.
+            file_path (str): Path to the CSV file for storing calculation history.
         """
         self.file_path = file_path
+        # Initialize the CSV file with headers if it doesn't exist
         if not os.path.exists(self.file_path):
             self.clear_history()  
 
     def add_record(self, operation, num1, num2, result):
         """
-        Initializes the HistoryManager with a specified file path. If the file does not
-        exist, it creates one with appropriate headers.
+        Adds a new record to the calculation history, maintaining only the last 5 records.
 
         Args:
-            file_path (str): The path to the CSV file. Defaults to 'history.csv'.
+            operation (str): The operation performed (e.g., "Add", "Multiply").
+            num1 (float): The first number in the calculation.
+            num2 (float): The second number in the calculation.
+            result (float): The result of the calculation.
         """
         df = self.load_history()
         new_record = pd.DataFrame([{
@@ -65,10 +51,10 @@ class HistoryManager:
 
     def load_history(self):
         """
-        Loads the calculation history from the CSV file.
+        Loads calculation history from the CSV file.
 
         Returns:
-            DataFrame: A pandas DataFrame containing the history of calculations.
+            DataFrame: A DataFrame containing the calculation history records.
         """
         if os.path.exists(self.file_path):
             return pd.read_csv(self.file_path)
@@ -76,7 +62,12 @@ class HistoryManager:
         return pd.DataFrame(columns=['Operation', 'Num1', 'Num2', 'Result'])
 
     def show_history(self):
-        """Display the history of calculations."""
+        """
+        Displays the history of calculations.
+
+        Prints the contents of the history file if it exists; otherwise, 
+        it displays a message indicating no history is available.
+        """
         df = self.load_history()
         if df.empty:
             print("No history available.")
@@ -85,13 +76,22 @@ class HistoryManager:
 
     def clear_history(self):
         """
-        Clears all records from the calculation history by creating an empty CSV file.
+        Clears all records from the calculation history.
+
+        Overwrites the history file with an empty DataFrame containing only headers.
         """
         pd.DataFrame(columns=['Operation', 'Num1', 'Num2', 'Result']).to_csv(self.file_path, index=False)
         print("History cleared.")
 
     def delete_record(self, index):
-        """Delete a specific record from the history by index."""
+        """
+        Deletes a specific record from the history by index.
+
+        Args:
+            index (int): The index of the record to delete.
+
+        Prints a confirmation if the record is deleted or an error message if the index is invalid.
+        """
         df = self.load_history()
         if 0 <= index < len(df):
             df = df.drop(index).reset_index(drop=True)

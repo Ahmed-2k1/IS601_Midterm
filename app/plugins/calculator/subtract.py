@@ -1,35 +1,27 @@
-"""
-subtract.py
-
-This module provides the Subtract class to handle subtraction operations in the calculator.
-The result of the subtraction is displayed and saved to the calculation history.
-
-Classes:
-    Subtract - Executes subtraction and stores the result in the history.
-
-Usage:
-    from subtract import Subtract
-"""
-
 import logging
 from app.commands import Command
 from app.history_manager import HistoryManager
 
 class Subtract(Command):
     """
-    A command to perform subtraction between two numbers.
+    Command to perform a subtraction operation between two numbers.
 
-    Methods:
-        execute() - Prompts for two numbers, subtracts them, displays the result, and stores it in history.
+    Attributes:
+        history_manager (HistoryManager): Manages the history of calculation records.
     """
 
     def __init__(self):
+        """
+        Initializes the Subtract command with a history manager to log the operation's result.
+        """
         self.history_manager = HistoryManager()
 
     def execute(self):
         """
-        Executes the subtraction operation by taking user input for two numbers, calculating the difference,
-        and displaying and storing the result.
+        Executes the subtraction operation by prompting the user for two numbers.
+
+        Prompts the user to input two numbers, calculates their difference, displays the result,
+        logs the operation, and stores it in the history. Handles invalid input with an error message.
 
         Raises:
             ValueError: If the input is not a valid number.

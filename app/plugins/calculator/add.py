@@ -1,39 +1,31 @@
-"""
-add.py
-
-This module provides the Add class to handle addition operations in the calculator.
-The result of the addition is displayed and saved to the calculation history.
-
-Classes:
-    Add - Executes addition and stores the result in the history.
-
-Usage:
-    from add import Add
-"""
-
 import logging
 from app.commands import Command
 from app.history_manager import HistoryManager
+
 class Add(Command):
     """
-    A command to perform addition between two numbers.
+    Command to perform an addition operation between two numbers.
 
-    Methods:
-        execute() - Prompts for two numbers, adds them, displays the result, and stores it in history.
+    Attributes:
+        history_manager (HistoryManager): Manages the history of calculation records.
     """
 
     def __init__(self):
+        """
+        Initializes the Add command with a history manager to log the operation's result.
+        """
         self.history_manager = HistoryManager()
 
     def execute(self):
         """
-        Executes the addition operation by taking user input for two numbers, calculating the sum,
-        and displaying and storing the result.
-
-        Raises:
-            ValueError: If the input is not a valid number.
+        Executes the addition operation by prompting the user for two numbers.
+        
+        Prompts the user to input two numbers, calculates their sum, displays the result,
+        logs the operation, and stores it in the history. Handles invalid input with an error message.
+        
+        Exceptions:
+            ValueError: If the input is not a valid number, an error message is shown.
         """
-
         try:
             num1 = float(input("Enter first number: "))
             num2 = float(input("Enter second number: "))

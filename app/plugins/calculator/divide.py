@@ -1,40 +1,32 @@
-"""
-divide.py
-
-This module provides the Divide class to handle division operations in the calculator.
-The result of the division is displayed and saved to the calculation history.
-
-Classes:
-    Divide - Executes division and stores the result in the history.
-
-Usage:
-    from divide import Divide
-"""
-
 import logging
 from app.commands import Command
 from app.history_manager import HistoryManager
 
 class Divide(Command):
     """
-    A command to perform division between two numbers.
+    Command to perform a division operation between two numbers.
 
-    Methods:
-        execute() - Prompts for two numbers, divides them, displays the result, and stores it in history.
+    Attributes:
+        history_manager (HistoryManager): Manages the history of calculation records.
     """
 
     def __init__(self):
+        """
+        Initializes the Divide command with a history manager to log the operation's result.
+        """
         self.history_manager = HistoryManager()
 
     def execute(self):
         """
-        Executes the division operation by taking user input for two numbers, calculating the quotient,
-        and displaying and storing the result. Checks for division by zero.
+        Executes the division operation by prompting the user for two numbers.
+
+        Prompts the user to input two numbers, checks for division by zero, calculates the quotient, 
+        displays the result, logs the operation, and stores it in the history. Handles invalid input 
+        with an error message.
 
         Raises:
-            ValueError: If the input is not a valid number or division by zero is attempted.
+            ValueError: If the input is not a valid number or if division by zero is attempted.
         """
-
         try:
             num1 = float(input("Enter first number: "))
             num2 = float(input("Enter second number: "))
