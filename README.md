@@ -1,120 +1,118 @@
 
 # IS601 Midterm Advanced Calculator
 
-## Introduction
+## Overview
 
-This project presents a modular and extendable Python-based calculator for the command line, featuring core arithmetic functions and a robust history management system. Designed with modularity and extensibility in mind, it uses a plugin-based architecture that enables flexible customization. The code adheres to best practices for clean design, making use of multiple design patterns.
+This project is a command-line calculator built in Python, designed with modularity in mind. It allows basic arithmetic operations, records and retrieves calculation history, and supports extensible features through a plugin system. The architecture incorporates several design patterns, including Command, Facade, Singleton, and Plugin-based designs.
 
 ## Key Features
 
-- **Arithmetic Functions**: Basic operations including addition, subtraction, multiplication, and division.
-- **History Management**: Easily manage past calculations by saving, loading, and editing them with CSV and `pandas` support.
-- **Command Pattern**: Each command is handled uniformly via a `Command` and `CommandHandler` system.
-- **Comprehensive Logging**: Logs track command executions and errors for easy debugging.
-- **Plugin-Based Flexibility**: Plugins like `greet`, `calculator`, `menu`, and `exit` allow seamless extension.
-- **CI/CD with GitHub Actions**: Automated testing and continuous integration streamline code validation.
+- **Arithmetic Functions**: Supports essential operations such as addition, subtraction, multiplication, and division.
+- **History Management**: Saves and loads calculation history via a CSV file with the help of Pandas.
+- **Command Pattern**: Enables consistent execution of commands.
+- **Comprehensive Logging**: Captures details on command usage and errors for troubleshooting.
+- **Environment Variable Configuration**: Allows dynamic configuration adjustments.
+- **Plugin Support**: Easily add or remove features.
 
-## Design Patterns and Rationale
+## Design Patterns
 
 ### 1. Command Pattern
 
-The **Command Pattern** enables each action (e.g., addition, subtraction) to be represented as an object. By encapsulating each operation as a command, we achieve a modular and consistent method for adding and handling operations.
+The **Command Pattern** allows each function to be encapsulated as a standalone command class. Commands like `add`, `subtract`, and `save_history` use this pattern, standardizing their execution.
 
-- **Why use this pattern?** It enables easy addition of new operations with minimal impact on existing code, making the calculator highly flexible.
-- **Code References**:
+- **Why Command Pattern?** It simplifies the addition of new functions and maintains the structure of the application.
+- **Code Examples**:
   - [Addition Command](app/plugins/calculator/add.py)
   - [Subtraction Command](app/plugins/calculator/subtract.py)
   - [History Commands](app/plugins/calculator/history_commands.py)
 
 ### 2. Facade Pattern
 
-The **Facade Pattern** is implemented in `history_manager.py` to provide an easier interface for complex operations like saving, loading, and modifying calculation records.
+The **Facade Pattern** in `history_manager.py` simplifies interaction with the history management system. It provides methods to save, load, clear, and delete records, minimizing complexity for the user.
 
-- **Why use this pattern?** This pattern streamlines interactions with the history management system by hiding complex internal operations, enhancing code simplicity.
-- **Code Reference**:
-  - [History Manager as Facade](app/history_manager.py)
+- **Why Facade Pattern?** It provides a simpler interface for history management functions, making interactions straightforward.
+- **Code Example**:
+  - [History Manager](app/history_manager.py)
 
 ### 3. Singleton Pattern
 
-The **Singleton Pattern** is applied to configurations, particularly for logging, to ensure only a single instance is present throughout the application.
+The **Singleton Pattern** guarantees that certain configurations, such as logging, have a single instance across the application.
 
-- **Why use this pattern?** This prevents multiple configuration instances, ensuring consistency and efficient resource usage.
-- **Code Reference**:
-  - [Logging Configuration](logging.conf)
+- **Why Singleton Pattern?** It ensures configuration consistency by allowing only one instance for setup details.
+- **Code Example**:
+  - [Logging Setup](logging.conf)
 
 ### 4. Plugin Architecture
 
-The **Plugin Architecture** is the backbone of the calculator’s flexibility, enabling commands like `greet`, `calculator`, `menu`, and `exit` to be loaded dynamically and work independently.
+The **Plugin Architecture** enables adding new features (e.g., `greet`, `calculator`, `menu`, `exit`) dynamically by creating new plugin modules.
 
-- **Why use this pattern?** It provides dynamic functionality that is easily customizable, allowing new features to be added without modifying core components.
-- **Code References**:
+- **Why Plugin Architecture?** It allows flexibility, making it easy to add or remove commands without modifying the main code.
+- **Code Examples**:
   - [Calculator Plugins](app/plugins/calculator/)
   - [Greet Plugin](app/plugins/greet/__init__.py)
   - [Menu Plugin](app/plugins/menu/__init__.py)
   - [Exit Plugin](app/plugins/exit/__init__.py)
 
+## Environment Variables
 
-## Instructions for Use
+Environment variables provide flexible configuration, managing settings such as the history file location or logging paths. This flexibility allows the application to adapt to different deployment setups.
 
-To start the application from the command line:
+- **Code Reference**: Environment variables are set up within [main.py](main.py).
+
+## Logging
+
+Logging is configured in `logging.conf`, which captures various logging levels like INFO, DEBUG, and ERROR. Logging is vital for tracking the application's actions and identifying issues.
+
+- **Logging Highlights**:
+  - **Commands**: Records each command executed by the user.
+  - **Error Handling**: Logs exceptions, aiding in debugging.
+  - **History Management**: Logs operations related to saving, loading, and clearing history.
+
+- **Code Reference**:
+  - [Logging Config](logging.conf)
+
+## Error Handling: LBYL and EAFP
+
+This project employs **Look Before You Leap (LBYL)** by checking conditions (e.g., validating file paths or index ranges) before proceeding. **Easier to Ask for Forgiveness than Permission (EAFP)** could be implemented with `try-except` blocks to manage errors more fluidly.
+
+- **Code Examples**:
+  - **LBYL**: File checks in [history_manager.py](app/history_manager.py)
+  - **EAFP**: Could be added in future updates to handle file access and similar tasks.
+
+
+## Usage
+
+Start the application from the command line:
 
 ```bash
 python main.py
 ```
 
-### Available Commands
+### Commands
 
-In the REPL interface, use the following commands:
+In the REPL interface, available commands include:
 
-- **Calculator Functions**: 
-  - `add <number1> <number2>`: Adds two values.
-  - `subtract <number1> <number2>`: Subtracts the second number from the first.
-  - `multiply <number1> <number2>`: Multiplies two numbers.
-  - `divide <number1> <number2>`: Divides the first number by the second.
-  
-- **History Management**:
-  - `save`: Save current calculations.
-  - `load`: Retrieve and view previous calculations.
-  - `clear`: Remove all records from history.
-  - `delete <record_id>`: Deletes a specific entry.
-
+- **Calculator Commands**:
+  - `add <num1> <num2>`
+  - `subtract <num1> <num2>`
+  - `multiply <num1> <num2>`
+  - `divide <num1> <num2>`
+- **History Commands**:
+  - `save`, `load`, `clear`, `delete <index>`
 - **General Commands**:
-  - `greet`: Display a greeting message.
-  - `menu`: Lists all available commands.
-  - `exit`: Terminates the application.
+  - `greet`, `menu`, `exit`
 
-## Testing Suite
+## Testing
 
-A full suite of tests is included in the `tests` directory. Each function is tested to ensure stability. Run tests with `pytest`:
+A comprehensive test suite in the `tests` directory covers all components. Run tests with:
 
 ```bash
 pytest
 ```
 
-## CI/CD Workflow
+## CI/CD
 
-The project uses GitHub Actions to automate testing, ensuring code quality and integrity for each push or pull request.
+GitHub Actions are used for automated testing, ensuring consistent code quality with each update.
 
-## Logging Setup
-
-Logging is configured in `logging.conf`, specifying log levels like INFO, DEBUG, and ERROR. Key actions logged include:
-
-- **Commands**: Every command executed is logged, including inputs and outputs.
-- **Errors**: Captures errors to assist in debugging.
-- **History Changes**: Logs modifications in calculation history for traceability.
-
-## Dependencies
-
-Dependencies are listed in `requirements.txt`:
-
-- `pandas`: For history data management.
-- `pytest`: For testing.
-
-Install all dependencies using:
-
-```bash
-pip install -r requirements.txt
-```
-
-## Video
+## Video Link
 
